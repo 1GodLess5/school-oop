@@ -9,7 +9,7 @@ public enum SubjectsToChoose {
     LITERATURE("Literature"),
     SCIENCE("Science"),
     ART("Art"),
-    GEOGRAPHY("Georgraphy"),
+    GEOGRAPHY("Geography"),
     IT("IT"),
     GRAPHIC_DESIGN("Graphic design"),
     PHILOSOPHY("Philosophy"),
