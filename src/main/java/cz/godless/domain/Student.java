@@ -1,4 +1,4 @@
-package cz.godless.student;
+package cz.godless.domain;
 
 import java.util.List;
 import java.util.Map;
