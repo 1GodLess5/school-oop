@@ -8,4 +8,17 @@ public class InputUtils {
     public static String readString(){
         return scanner.nextLine();
     }
+
+    public static int readInt(){
+        while (true){
+            try {
+                int input = scanner.nextInt();
+                scanner.nextLine();
+                return input;
+            } catch (Exception e){
+                System.out.println("Invalid input, try again.");
+                scanner.nextLine();
+            }
+        }
+    }
 }
