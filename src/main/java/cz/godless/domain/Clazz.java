@@ -1,6 +1,4 @@
-package cz.godless;
-
-import cz.godless.student.Student;
+package cz.godless.domain;
 
 import java.util.List;
 
