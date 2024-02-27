@@ -9,10 +9,23 @@ public class InputUtils {
         return scanner.nextLine();
     }
 
-    public static int readInt(){
+    public static int readInt() {
         while (true){
             try {
                 int input = scanner.nextInt();
+                scanner.nextLine();
+                return input;
+            } catch (Exception e){
+                System.out.println("Invalid input, try again.");
+                scanner.nextLine();
+            }
+        }
+    }
+
+    public static float readFloat() {
+        while (true) {
+            try {
+                float input = scanner.nextFloat();
                 scanner.nextLine();
                 return input;
             } catch (Exception e){
