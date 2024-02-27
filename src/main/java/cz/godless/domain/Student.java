@@ -1,13 +1,14 @@
 package cz.godless.domain;
 
+import cz.godless.subjects.Subject;
+
 import java.util.List;
-import java.util.Map;
 
 public class Student {
     private final String name;
-    private final Map<String, List<Float>> subjects;
+    private final List<Subject> subjects;
 
-    public Student(String name, Map<String, List<Float>> subjects){
+    public Student(String name, List<Subject> subjects){
         this.name = name;
         this.subjects = subjects;
     }
@@ -16,7 +17,7 @@ public class Student {
         return name;
     }
 
-    public Map<String, List<Float>> getSubjects() {
+    public List<Subject> getSubjects() {
         return subjects;
     }
 }
