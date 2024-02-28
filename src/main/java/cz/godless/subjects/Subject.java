@@ -4,17 +4,14 @@ import cz.godless.domain.Student;
 import cz.godless.grades.Grade;
 import cz.godless.utility.InputUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class Subject {
     private final String subjectName;
     private final Map<Student, List<Grade>> studentGrades;
 
-    public Subject(String subjectName, Map<Student, List<Grade>> studentGrades) {
+    public Subject(String subjectName) {
         this.subjectName = subjectName;
         this.studentGrades = new HashMap<>();
     }
@@ -40,7 +37,7 @@ public class Subject {
                 .orElse(null);
     }
 
-    public void addGrades() {
+    public void addGrades(String studentName) {
         float userInput;
         do {
             System.out.println("Add grade (if you want to stop add 0): ");
@@ -49,9 +46,20 @@ public class Subject {
             if ((userInput < 1 || userInput > 5) && userInput != 0) {
                 System.out.println("Invalid input. Try again.");
             } else if (userInput != 0) {
-
-                Grade grade = new Grade(userInput, "");
-                this.studentGrades.put(Student, grade);
+                Grade grade = new Grade(userInput, addGradeDescription());
+                int counter = 0;
+                for (Map.Entry<Student, List<Grade>> entry: this.studentGrades.entrySet()){
+                    if (entry.getKey().getName().equals(studentName)) {
+                        entry.getValue().add(grade);
+                        counter++;
+                        break;
+                    }
+                }
+                if (counter == 0) {
+                    List<Grade> newStudentGrades = new ArrayList<>();
+                    newStudentGrades.add(grade);
+                    this.studentGrades.put(new Student(studentName), newStudentGrades);
+                }
             }
         } while (userInput != 0);
     }
