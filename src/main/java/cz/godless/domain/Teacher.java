@@ -17,6 +17,10 @@ public class Teacher {
         return name;
     }
 
+    public List<Subject> getTeachingSubjects() {
+        return teachingSubjects;
+    }
+
     // TODO CONTINUE HERE
     // TRIDA VE KTERE JSOU ZACI, PREDMET KTERY MA V SOBE ZAPSANE ZAKY
 }
