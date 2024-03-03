@@ -17,8 +17,8 @@ public class Clazz {
         return name;
     }
 
-    public String getMainTeacher() {
-        return mainTeacher.getName();
+    public Teacher getMainTeacher() {
+        return mainTeacher;
     }
 
     public List<Student> getStudents() {
