@@ -1,14 +1,31 @@
 package cz.godless.service;
 
 import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
 import cz.godless.constant.Constant;
+import cz.godless.domain.Clazz;
+import cz.godless.json.jsonVocabulary;
+import cz.godless.subjects.Subject;
+import cz.godless.subjects.SubjectsToChoose;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class JsonService {
-    public static void processJsonFile() {
+    private final List<Clazz> clazzes;
+    private String className;
+    private String mainTeacherName;
+    private List<Subject> subjects;
+    private String subjectName;
+    private String studentName;
+
+    public JsonService() {
+        this.clazzes = new ArrayList<>();
+    }
+
+    public void processJsonFile() {
         String filePath = Constant.SCHOOL_FILES_PATH;
         try (JsonReader reader = new JsonReader(new FileReader(filePath))) {
             reader.beginArray(); // Start reading the JSON array
@@ -21,15 +38,17 @@ public class JsonService {
         }
     }
 
-    private static void processClazz(JsonReader reader) throws IOException {
+    private void processClazz(JsonReader reader) throws IOException {
         reader.beginObject(); // Start reading the Clazz object
         while (reader.hasNext()) {
-            String name = reader.nextName(); // Get the name of the next JSON element
-            if ("name".equals(name)) {
-                System.out.println("Class Name: " + reader.nextString());
-            } else if ("mainTeacher".equals(name)) {
+            String nextElement = reader.nextName();
+            if (jsonVocabulary.CLASS_NAME.getDescription().equals(nextElement)) {
+                this.className = reader.nextString();
+//                System.out.println("Class Name: " + reader.nextString());
+            } else if (jsonVocabulary.MAIN_TEACHER.getDescription().equals(nextElement)) {
+//                TODO
                 processMainTeacher(reader);
-            } else if ("students".equals(name)) {
+            } else if ("students".equals(nextElement)) {
                 processStudents(reader);
             } else {
                 reader.skipValue(); // Skip values of other elements
@@ -38,13 +57,14 @@ public class JsonService {
         reader.endObject(); // End of Clazz object
     }
 
-    private static void processMainTeacher(JsonReader reader) throws IOException {
+    private void processMainTeacher(JsonReader reader) throws IOException {
         reader.beginObject(); // Start reading the mainTeacher object
         while (reader.hasNext()) {
-            String name = reader.nextName(); // Get the name of the next JSON element
-            if ("name".equals(name)) {
-                System.out.println("Main Teacher: " + reader.nextString());
-            } else if ("teachingSubjects".equals(name)) {
+            String nextElement = reader.nextName();
+            if (jsonVocabulary.TEACHER_NAME.getDescription().equals(nextElement)) {
+                this.mainTeacherName = reader.nextString();
+//                System.out.println("Main Teacher: " + reader.nextString());
+            } else if (jsonVocabulary.TEACHING_SUBJECTS.getDescription().equals(nextElement)) {
                 processTeachingSubjects(reader);
             } else {
                 reader.skipValue(); // Skip values of other elements
@@ -53,29 +73,43 @@ public class JsonService {
         reader.endObject(); // End of mainTeacher object
     }
 
-    private static void processTeachingSubjects(JsonReader reader) throws IOException {
-        reader.beginArray(); // Start reading the teachingSubjects array
+    private void processTeachingSubjects(JsonReader reader) throws IOException {
+        reader.beginArray();
         while (reader.hasNext()) {
-            reader.beginObject(); // Start reading a teachingSubject object
+            reader.beginObject();
+            boolean isValidSubject = true;
             while (reader.hasNext()) {
-                String name = reader.nextName(); // Get the name of the next JSON element
-                if ("subjectName".equals(name)) {
-                    System.out.println("Subject Name: " + reader.nextString());
-                } else if ("studentGrades".equals(name)) {
-                    processStudentGrades(reader);
+                String nextElement = reader.nextName();
+                if (jsonVocabulary.SUBJECT_NAME.getDescription().equals(nextElement)) {
+//                    System.out.println("Subject Name: " + reader.nextString());
+                    String checkSubject = reader.nextString();
+
+                    if (!isSubjectValid(checkSubject)) {
+                        System.out.println("Invalid subject encountered " + checkSubject + "!");
+                        isValidSubject = false;
+                        break;
+                    } else {
+                        this.subjectName = checkSubject;
+                    }
+                } else if (jsonVocabulary.STUDENT_GRADES.getDescription().equals(nextElement)) {
+                    if (isValidSubject) {
+                        processStudentGrades(reader);
+                    } else {
+                        reader.skipValue();
+                    }
                 } else {
-                    reader.skipValue(); // Skip values of other elements
+                    reader.skipValue();
                 }
             }
-            reader.endObject(); // End of teachingSubject object
+            reader.endObject();
         }
-        reader.endArray(); // End of teachingSubjects array
+        reader.endArray();
     }
 
-    private static void processStudentGrades(JsonReader reader) throws IOException {
-        reader.beginObject(); // Start reading the studentGrades object
+    private void processStudentGrades(JsonReader reader) throws IOException {
+        reader.beginObject();
         while (reader.hasNext()) {
-            String studentName = reader.nextName(); // Get the student name
+            this.studentName = reader.nextName();
             System.out.println("\tStudent Name: " + studentName);
             reader.beginArray(); // Start reading the grades array
             while (reader.hasNext()) {
@@ -114,8 +148,15 @@ public class JsonService {
         reader.endArray(); // End of students array
     }
 
-    public static void main(String[] args) {
-        String filePath = "path/to/your/json/file.json";
-        processJsonFile(filePath);
+    private boolean isSubjectValid(String subjectNameToCheck) {
+        String check =  Stream.of(SubjectsToChoose.values())
+                .map(SubjectsToChoose::getDescription)
+                .filter(subjectNameToCheck::equals)
+                .findFirst()
+                .orElse(null);
+
+        return check != null;
     }
 }
+
+
