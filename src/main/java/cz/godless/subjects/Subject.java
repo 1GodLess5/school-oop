@@ -16,6 +16,11 @@ public class Subject {
         this.studentGrades = new HashMap<>();
     }
 
+    public Subject(String subjectName, Map<Student, List<Grade>> studentGrades) {
+        this.subjectName = subjectName;
+        this.studentGrades = studentGrades;
+    }
+
     public String getSubjectName() {
         return subjectName;
     }
