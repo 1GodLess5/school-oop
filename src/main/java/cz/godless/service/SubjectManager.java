@@ -4,6 +4,7 @@ import cz.godless.domain.Student;
 import cz.godless.grades.Grade;
 import cz.godless.subjects.Subject;
 import cz.godless.utility.InputUtils;
+import cz.godless.utility.PrintUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class SubjectManager {
         long count = this.subjects.stream()
                 .filter(subject -> subject.getSubjectName().equals(newSubject))
                 .count();
-        if (count == 0){
+        if (count == 0) {
             this.subjects.add(new Subject(newSubject));
         }
     }
@@ -42,34 +43,13 @@ public class SubjectManager {
             System.out.println("To which subject do you want to add?");
             userInput = InputUtils.readInt();
 
-            if (userInput != 0){
+            if (userInput != 0) {
                 String chosenSubject = Subject.chooseSubject(userInput);
-                if (chosenSubject == null){
+                if (chosenSubject == null) {
                     System.out.println("Invalid input.");
                 } else {
                     this.addSubject(chosenSubject);
                     this.addingStudent(chosenSubject, student);
-
-
-                    /*
-                    for (Subject subject : subjects){
-            System.out.println(subject.getSubjectName());
-            for (Map.Entry<Student, List<Grade>> entry : subject.getGrades().entrySet()) {
-
-                System.out.println(entry.getKey().getName() + ": ");
-                entry.getValue().forEach(grade -> System.out.println(grade.getGrade() + " - " + grade.getDescription()));
-            }
-        }
-                     */
-
-
-
-//                    Subject subject = new Subject(chosenSubject);
-//                    subject.addGrades(studentName);
-//                    subjects.add(subject);
-
-
-
                 }
 
             }
@@ -82,10 +62,10 @@ public class SubjectManager {
         Subject searchSubject = findSubject(chosenSubject);
 
         if (searchSubject != null) {
-            for (Map.Entry<Student, List<Grade>> entry: searchSubject.getGrades().entrySet()){
+            for (Map.Entry<Student, List<Grade>> entry : searchSubject.getGrades().entrySet()) {
                 if (entry.getKey().getName().equals(student.getName())) {
                     System.out.println("This student already exists.");
-                    System.out.println("His grades: " );
+                    System.out.println("His grades: ");
                     entry.getValue().forEach(grade -> System.out.println(grade.getGrade() + " - " + grade.getDescription()));
                     System.out.println("Do you wish to add another grade?");
                     System.out.println("0 - No");
@@ -96,7 +76,8 @@ public class SubjectManager {
                         switch (userInput) {
                             case 0 -> {
                                 return;
-                            } case 1 -> {
+                            }
+                            case 1 -> {
                                 searchSubject.addGrades(entry.getKey().getName());
                                 return;
                             }
@@ -106,6 +87,18 @@ public class SubjectManager {
                 }
             }
             searchSubject.addGrades(student.getName());
+        }
+    }
+
+    public void printSubjects() {
+        PrintUtils.printDivider();
+        for (Subject subject : this.subjects) {
+            System.out.println(subject.getSubjectName());
+            for (Map.Entry<Student, List<Grade>> entry : subject.getGrades().entrySet()) {
+                System.out.println(entry.getKey().getName() + ": ");
+                entry.getValue().forEach(grade -> System.out.println(grade.getGrade() + " - " + grade.getDescription()));
+            }
+            PrintUtils.printDivider();
         }
     }
 }
