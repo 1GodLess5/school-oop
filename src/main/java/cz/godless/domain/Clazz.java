@@ -4,10 +4,10 @@ import java.util.List;
 
 public class Clazz {
     private final String name;
-    private final String mainTeacher;
+    private final Teacher mainTeacher;
     private final List<Student> students;
 
-    public Clazz(String name, String mainTeacher, List<Student> students) {
+    public Clazz(String name, Teacher mainTeacher, List<Student> students) {
         this.name = name;
         this.mainTeacher = mainTeacher;
         this.students = students;
@@ -18,7 +18,7 @@ public class Clazz {
     }
 
     public String getMainTeacher() {
-        return mainTeacher;
+        return mainTeacher.getName();
     }
 
     public List<Student> getStudents() {
