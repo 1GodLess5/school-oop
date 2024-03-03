@@ -6,7 +6,9 @@ public enum jsonVocabulary {
     TEACHER_NAME("teacherName"),
     TEACHING_SUBJECTS("teachingSubjects"),
     SUBJECT_NAME("subjectName"),
-    STUDENT_GRADES("studentGrades")
+    STUDENT_GRADES("studentGrades"),
+    GRADE("grade"),
+    DESCRIPTION("description")
 
     ;
 
