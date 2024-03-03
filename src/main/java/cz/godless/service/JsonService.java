@@ -3,6 +3,8 @@ package cz.godless.service;
 import com.google.gson.stream.JsonReader;
 import cz.godless.constant.Constant;
 import cz.godless.domain.Clazz;
+import cz.godless.domain.Student;
+import cz.godless.grades.Grade;
 import cz.godless.json.jsonVocabulary;
 import cz.godless.subjects.Subject;
 import cz.godless.subjects.SubjectsToChoose;
@@ -11,6 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class JsonService {
@@ -18,6 +21,11 @@ public class JsonService {
     private String className;
     private String mainTeacherName;
     private List<Subject> subjects;
+    private Subject subject;
+    private Map<Student, List<Grade>> studentGrades;
+    private Grade grade;
+    private List<Grade> grades;
+    private Student student;
     private String subjectName;
     private String studentName;
 
@@ -110,16 +118,27 @@ public class JsonService {
         reader.beginObject();
         while (reader.hasNext()) {
             this.studentName = reader.nextName();
-            System.out.println("\tStudent Name: " + studentName);
-            reader.beginArray(); // Start reading the grades array
+            this.student = new Student(studentName);
+//            System.out.println("\tStudent Name: " + studentName);
+            reader.beginArray();
             while (reader.hasNext()) {
-                reader.beginObject(); // Start reading a grade object
+                reader.beginObject();
                 while (reader.hasNext()) {
-                    String gradeType = reader.nextName(); // Get the grade type
-                    if ("grade".equals(gradeType)) {
-                        System.out.println("\t\tGrade: " + reader.nextDouble());
-                    } else if ("description".equals(gradeType)) {
-                        System.out.println("\t\tDescription: " + reader.nextString());
+                    String nextElement = reader.nextName();
+                    float gradeValue = 0;
+                    if (jsonVocabulary.GRADE.getDescription().equals(nextElement)) {
+//                        System.out.println("\t\tGrade: " + reader.nextDouble());
+                        gradeValue = (float) reader.nextDouble();
+                    } else if (jsonVocabulary.DESCRIPTION.getDescription().equals(nextElement)) {
+//                        System.out.println("\t\tDescription: " + reader.nextString());
+                        if (gradeValue != 0) {
+                            this.grade = new Grade(gradeValue, reader.nextString());
+                            this.grades.add(grade);
+                        }
+//                        TODO CONTINUE HERE
+//                         this.studentGrades.put(this.student, this.grades);
+//                            this.subject = new Subject(this.subjectName, this.studentGrades);
+//                      TODO  MY BRAIN IS FUCKED :}
                     } else {
                         reader.skipValue(); // Skip values of other elements
                     }
