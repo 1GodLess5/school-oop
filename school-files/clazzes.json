@@ -1,0 +1,43 @@
+[
+  {
+    "name": "1.A",
+    "mainTeacher": {
+      "name": "Mrs. Smith",
+      "teachingSubjects": [
+        {
+          "subjectName": "Mathematics",
+          "studentGrades": {
+            "Albert": [
+              {
+                "grade": 1,
+                "description": "first test"
+              },
+              {
+                "grade": 2.2,
+                "description": "small test"
+              }
+            ],
+            "Denisa": [
+              {
+                "grade": 3,
+                "description": "first test"
+              },
+              {
+                "grade": 4,
+                "description": "small test"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "students": [
+      {
+        "name": "Albert"
+      },
+      {
+        "name": "Denisa"
+      }
+    ]
+  }
+]
