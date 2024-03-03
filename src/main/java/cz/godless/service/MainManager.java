@@ -12,17 +12,17 @@ public class MainManager {
     public MainManager() {
         this.subjects = new ArrayList<>();
     }
-
-
     public void school(){
-        Subject mathematics = new Subject("Mathematics");
-        mathematics.addGrades("Albert");
+        JsonService jsonService = new JsonService();
 
-        this.subjects.add(mathematics);
-
-        SubjectManager subjectManager = new SubjectManager(this.subjects);
-        subjectManager.addStudentToSubject();
-        subjectManager.printSubjects();
+//        Subject mathematics = new Subject("Mathematics");
+//        mathematics.addGrades("Albert");
+//
+//        this.subjects.add(mathematics);
+//
+//        SubjectManager subjectManager = new SubjectManager(this.subjects);
+//        subjectManager.addStudentToSubject();
+//        subjectManager.printSubjects();
 
     }
 }
